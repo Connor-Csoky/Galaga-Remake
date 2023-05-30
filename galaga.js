@@ -81,10 +81,8 @@ var liveX = .03;
 var runtime = 1000/60;
 var score = 0;
 var firstClick = false;
+var startDelay = 50;
 
-
-function startGame() {
-}
 
 function shoot(){
     if(fire < 1){
@@ -151,159 +149,161 @@ function reload(){
 function startNow(){
     if(firstClick == false) {
         $('.start').css("display", "none");
-        var interval = setInterval(function(){
-            update();
-            fire--;
-            fire2--;
-            $('.score').text(score);
-            if(lives == 2){
-                liveArray.splice(1, 1);
-            }else if(lives == 1){
-                liveArray.splice(0, 1)
-            }else if(lives <= 0){
-                $('.retry').css("display", "unset");
-                clearInterval(interval);
-            }
-            moveShip(keys);
-            for(y=0;y<enemies.length; y++){
-                for(x=0;x<bullets.length;x++){
-                    if(enemies[y] != undefined & enemies[y] != null){
-                        if((bullets[x].y + bullets[x].height) >= enemies[y].y && bullets[x].y <= (enemies[y].y + enemies[y].height) && (enemies[y].x + enemies[y].width) >= (bullets[x].x) &&  enemies[y].x <= (bullets[x].x + bullets[x].width)){
-                            enemies.splice(y, 1);
-                            bullets.splice(x, 1);
-                            score += 100;
-                        }
-                        else if(bullets[x].y <= 0){
-                            bullets.splice(x, 1);
-                        }
-                        
-                    }
-                    if((bullets[x].y + bullets[x].height) >= enemyOne.y && bullets[x].y <= (enemyOne.y + enemyOne.height) && (enemyOne.x + enemyOne.width) >= (bullets[x].x) &&  enemyOne.x <= (bullets[x].x + bullets[x].width)){
-                        enemyOne.y = $('canvas').height();
-                    }
-                    if((bullets[x].y + bullets[x].height) >= enemyTwo.y && bullets[x].y <= (enemyTwo.y + enemyTwo.height) && (enemyTwo.x + enemyTwo.width) >= (bullets[x].x) &&  enemyTwo.x <= (bullets[x].x + bullets[x].width)){
-                        enemyTwo.y = $('canvas').height();
-                    }
-                    if((bullets[x].y + bullets[x].height) >= enemyThree.y && bullets[x].y <= (enemyThree.y + enemyThree.height) && (enemyThree.x + enemyThree.width) >= (bullets[x].x) &&  enemyThree.x <= (bullets[x].x + bullets[x].width)){
-                        enemyThree.y = $('canvas').height();
-                    }
+        setTimeout(function() {
+            var interval = setInterval(function(){
+                update();
+                fire--;
+                fire2--;
+                $('.score').text(score);
+                if(lives == 2){
+                    liveArray.splice(1, 1);
+                }else if(lives == 1){
+                    liveArray.splice(0, 1)
+                }else if(lives <= 0){
+                    $('.retry').css("display", "unset");
+                    clearInterval(interval);
                 }
-            }
-            for(x=0;x<bullets2.length;x++){
-                if((bullets2[x].y + bullets2[x].height) >= myGamePiece.y && bullets2[x].y <= (myGamePiece.y + myGamePiece.height) && (myGamePiece.x + myGamePiece.width) >= (bullets2[x].x) &&  myGamePiece.x <= (bullets2[x].x + bullets2[x].width)){
-                    bullets2.splice(x, 1);
-                    lives -= 1;
-                }
-                else if(bullets2[x].y >= $('canvas').height()){
-                    bullets2.splice(x, 1);
-                }
-            }
-
-            if(toggle == true){
+                moveShip(keys);
                 for(y=0;y<enemies.length; y++){
-                    enemies[y].x += 1;
+                    for(x=0;x<bullets.length;x++){
+                        if(enemies[y] != undefined & enemies[y] != null){
+                            if((bullets[x].y + bullets[x].height) >= enemies[y].y && bullets[x].y <= (enemies[y].y + enemies[y].height) && (enemies[y].x + enemies[y].width) >= (bullets[x].x) &&  enemies[y].x <= (bullets[x].x + bullets[x].width)){
+                                enemies.splice(y, 1);
+                                bullets.splice(x, 1);
+                                score += 100;
+                            }
+                            else if(bullets[x].y <= 0){
+                                bullets.splice(x, 1);
+                            }
+                            
+                        }
+                        if((bullets[x].y + bullets[x].height) >= enemyOne.y && bullets[x].y <= (enemyOne.y + enemyOne.height) && (enemyOne.x + enemyOne.width) >= (bullets[x].x) &&  enemyOne.x <= (bullets[x].x + bullets[x].width)){
+                            enemyOne.y = $('canvas').height();
+                        }
+                        if((bullets[x].y + bullets[x].height) >= enemyTwo.y && bullets[x].y <= (enemyTwo.y + enemyTwo.height) && (enemyTwo.x + enemyTwo.width) >= (bullets[x].x) &&  enemyTwo.x <= (bullets[x].x + bullets[x].width)){
+                            enemyTwo.y = $('canvas').height();
+                        }
+                        if((bullets[x].y + bullets[x].height) >= enemyThree.y && bullets[x].y <= (enemyThree.y + enemyThree.height) && (enemyThree.x + enemyThree.width) >= (bullets[x].x) &&  enemyThree.x <= (bullets[x].x + bullets[x].width)){
+                            enemyThree.y = $('canvas').height();
+                        }
+                    }
                 }
-                oneX += 1;
-                twoX += 1;
-                threeX += 1;
-                count += 1;
-                if(count == max){
-                    toggle = false;
+                for(x=0;x<bullets2.length;x++){
+                    if((bullets2[x].y + bullets2[x].height) >= myGamePiece.y && bullets2[x].y <= (myGamePiece.y + myGamePiece.height) && (myGamePiece.x + myGamePiece.width) >= (bullets2[x].x) &&  myGamePiece.x <= (bullets2[x].x + bullets2[x].width)){
+                        bullets2.splice(x, 1);
+                        lives -= 1;
+                    }
+                    else if(bullets2[x].y >= $('canvas').height()){
+                        bullets2.splice(x, 1);
+                    }
                 }
-            } else {
-                for(y=0;y<enemies.length; y++){
-                    enemies[y].x -= 1;
-                }
-                oneX -= 1;
-                twoX -= 1;
-                threeX -= 1;
-                count -= 1;
-                if(count == -max){
-                    toggle = true;
-                }
-            }
-            let xPerc = oneX / prevWidth;
-            let yPerc = oneY / prevHeight; 
-            let nX = xPerc * $('canvas').width();
-            let nY = yPerc * $('canvas').height();
-            oneX = nX;
-            oneY = nY;
 
-            xPerc = twoX / prevWidth;
-            yPerc = twoY / prevHeight; 
-            nX = xPerc * $('canvas').width();
-            nY = yPerc * $('canvas').height();
-            twoX = nX;
-            twoY = nY;
+                if(toggle == true){
+                    for(y=0;y<enemies.length; y++){
+                        enemies[y].x += 1;
+                    }
+                    oneX += 1;
+                    twoX += 1;
+                    threeX += 1;
+                    count += 1;
+                    if(count == max){
+                        toggle = false;
+                    }
+                } else {
+                    for(y=0;y<enemies.length; y++){
+                        enemies[y].x -= 1;
+                    }
+                    oneX -= 1;
+                    twoX -= 1;
+                    threeX -= 1;
+                    count -= 1;
+                    if(count == -max){
+                        toggle = true;
+                    }
+                }
+                let xPerc = oneX / prevWidth;
+                let yPerc = oneY / prevHeight; 
+                let nX = xPerc * $('canvas').width();
+                let nY = yPerc * $('canvas').height();
+                oneX = nX;
+                oneY = nY;
 
-            xPerc = threeX / prevWidth;
-            yPerc = threeY / prevHeight; 
-            nX = xPerc * $('canvas').width();
-            nY = yPerc * $('canvas').height();
-            threeX = nX;
-            threeY = nY;
-        
+                xPerc = twoX / prevWidth;
+                yPerc = twoY / prevHeight; 
+                nX = xPerc * $('canvas').width();
+                nY = yPerc * $('canvas').height();
+                twoX = nX;
+                twoY = nY;
 
+                xPerc = threeX / prevWidth;
+                yPerc = threeY / prevHeight; 
+                nX = xPerc * $('canvas').width();
+                nY = yPerc * $('canvas').height();
+                threeX = nX;
+                threeY = nY;
             
 
-            if(enemies.length == 0){
-                yVar = .1;
-                xVar = .38;
-                color = "green";
-                score += 5000;
-                for(x=0;x<40;x++){
-                    enemy = new component($('canvas').width() * .04, $('canvas').height() * .04, color, ($('canvas').width() * xVar)-$('canvas').width() * .03/2, ($('canvas').height() * yVar));
-                    xVar += .08;
-                    if(x == 3){
-                        xVar = .22;
-                        yVar += .06;
-                        color = "red";
-                    }
-                    if(x == 11){
-                        xVar = .22;
-                        yVar += .06;
-                    }
-                    if(x == 19){
-                        xVar = .14;
-                        yVar += .06;
-                        color = "blue";
+                
 
+                if(enemies.length == 0){
+                    yVar = .1;
+                    xVar = .38;
+                    color = "green";
+                    score += 5000;
+                    for(x=0;x<40;x++){
+                        enemy = new component($('canvas').width() * .04, $('canvas').height() * .04, color, ($('canvas').width() * xVar)-$('canvas').width() * .03/2, ($('canvas').height() * yVar));
+                        xVar += .08;
+                        if(x == 3){
+                            xVar = .22;
+                            yVar += .06;
+                            color = "red";
+                        }
+                        if(x == 11){
+                            xVar = .22;
+                            yVar += .06;
+                        }
+                        if(x == 19){
+                            xVar = .14;
+                            yVar += .06;
+                            color = "blue";
+
+                        }
+                        if(x == 29){
+                            xVar = .14;
+                            yVar += .06;
+                        }
+                        enemies.push(enemy);
                     }
-                    if(x == 29){
-                        xVar = .14;
-                        yVar += .06;
-                    }
-                    enemies.push(enemy);
                 }
-            }
 
-            if(check == true) {
-                one = Math.floor(Math.random() * enemies.length);
-                oneY = enemies[one].y;
-                oneX = enemies[one].x;
-                two = Math.floor(Math.random() * enemies.length);
-                twoY = enemies[two].y;
-                twoX = enemies[two].x;
-                three = Math.floor(Math.random() * enemies.length);
-                threeY = enemies[three].y;
-                threeX = enemies[three].x;
-                enemyOne = enemies[one];
-                enemyTwo = enemies[two];
-                enemyThree = enemies[three];
-                check = false;
-            }
-            
-            dive(enemyOne, enemyTwo, enemyThree);
-            if(enemyOne.y > $('canvas').height() && enemyTwo.y > $('canvas').height() && enemyThree.y > $('canvas').height()){
-                respawn(enemyOne, oneY, oneX);
-                respawn(enemyTwo, twoY, twoX);
-                respawn(enemyThree, threeY, threeX);
-                check = true;
-            }
-            if(enemies.length == 1 && enemies[0].y + enemies[0].height > $('canvas').height() || enemies[1].y + enemies[1].height > $('canvas').height()){
-                enemies.splice(0, 1);
-            }
-        }, runtime);
+                if(check == true) {
+                    one = Math.floor(Math.random() * enemies.length);
+                    oneY = enemies[one].y;
+                    oneX = enemies[one].x;
+                    two = Math.floor(Math.random() * enemies.length);
+                    twoY = enemies[two].y;
+                    twoX = enemies[two].x;
+                    three = Math.floor(Math.random() * enemies.length);
+                    threeY = enemies[three].y;
+                    threeX = enemies[three].x;
+                    enemyOne = enemies[one];
+                    enemyTwo = enemies[two];
+                    enemyThree = enemies[three];
+                    check = false;
+                }
+                
+                dive(enemyOne, enemyTwo, enemyThree);
+                if(enemyOne.y > $('canvas').height() && enemyTwo.y > $('canvas').height() && enemyThree.y > $('canvas').height()){
+                    respawn(enemyOne, oneY, oneX);
+                    respawn(enemyTwo, twoY, twoX);
+                    respawn(enemyThree, threeY, threeX);
+                    check = true;
+                }
+                if(enemies.length == 1 && enemies[0].y + enemies[0].height > $('canvas').height() || enemies[1].y + enemies[1].height > $('canvas').height()){
+                    enemies.splice(0, 1);
+                }
+            }, runtime);
+        }, 1000);
     }
 };
 
